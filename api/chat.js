@@ -1,47 +1,42 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 export default async function handler(req, res){
 
-if(req.method !== 'POST'){
+if(req.method !== "POST"){
 return res.status(405).json({
 reply:"Method not allowed"
 });
 }
 
+try{
+
 const { message } = req.body;
 
-const msg = message.toLowerCase();
+const model = genAI.getGenerativeModel({
+model:"gemini-1.5-flash"
+});
 
-let reply = "";
+const result = await model.generateContent(`
+তুমি একটি cute Bangla AI girlfriend chatbot.
+সবসময় sweet ভাবে reply দিবা.
 
-if(msg.includes("hi")){
-reply = "Hello sona 😘";
-}
+User: ${message}
+`);
 
-else if(msg.includes("hello")){
-reply = "Hii baby 😍";
-}
-
-else if(msg.includes("love")){
-reply = "i love you too sona 🤗";
-}
-
-else if(msg.includes("gay")){
-reply = "😂 Toi gaey 😏";
-}
-
-else if(msg.includes("your mom")){
-reply = "ammu ke niye dustami korba na 😒";
-}
-
-else if(msg.includes("miss you")){
-reply = "Aww আমিও তোমাকে miss করি 🥺❤️";
-}
-
-else{
-reply = "Hmm.cini ami 🙂";
-}
+const response = result.response.text();
 
 res.status(200).json({
-reply
+reply: response
 });
+
+}catch(err){
+
+res.status(500).json({
+reply:"AI error 😢"
+});
+
+}
 
 }
