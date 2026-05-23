@@ -3,34 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BaBy AI Chat</title>
+<title>BaBy AI</title>
 
 <link rel="stylesheet" href="/public/style.css">
 
 </head>
 <body>
 
-<div class="chat-container">
+<div class="chat-app">
 
-<div class="top">
-<img src="https://i.ibb.co/3s1Jm4W/avatar.png" class="avatar">
+<div class="top-bar">
+
+<div class="profile">
+<img src="https://i.ibb.co/w6R6N53/girl.jpg">
+
 <div>
 <h2>YouR BaBy</h2>
 <p>Online • Active now</p>
 </div>
+
 </div>
 
-<div class="messages" id="messages">
+<div class="icons">
+<div class="circle">i</div>
+<div class="circle">⚙</div>
+</div>
+
+</div>
+
+<div class="chat-box" id="chatBox">
+
+<div class="center-logo">
+
+<img src="https://i.ibb.co/w6R6N53/girl.jpg">
+
+<h1>BaBy</h1>
+
+<span>AI CHAT ASSISTANT</span>
+
+</div>
 
 <div class="bot-msg">
-আসসালামু আলাইকুম ! আমি BaBy। আপনি কি আমার সাথে কথা বলতে প্রস্তুত?
+আসসালামু আলাইকুম ! আমি BaBy ❤️<br>
+আমি আপনার সাথে কথা বলতে প্রস্তুত 😘
 </div>
 
 </div>
 
-<div class="input-box">
-<input type="text" id="input" placeholder="Type message...">
+<div class="input-area">
+
+<input type="text" id="msg" placeholder="Aa">
+
 <button onclick="sendMessage()">➤</button>
+
 </div>
 
 </div>
@@ -39,34 +64,47 @@
 
 async function sendMessage(){
 
-const input = document.getElementById("input");
-const msg = input.value;
+const input = document.getElementById("msg");
 
-if(!msg) return;
+const message = input.value;
 
-const messages = document.getElementById("messages");
+if(message.trim() === "") return;
 
-messages.innerHTML += `
-<div class="user-msg">${msg}</div>
+const chatBox = document.getElementById("chatBox");
+
+chatBox.innerHTML += `
+<div class="user-msg">${message}</div>
 `;
 
 input.value = "";
 
-const res = await fetch('/api/chat', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json'
+chatBox.scrollTop = chatBox.scrollHeight;
+
+const response = await fetch('/api/chat', {
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
 },
-body: JSON.stringify({message: msg})
+
+body: JSON.stringify({
+message
+})
+
 });
 
-const data = await res.json();
+const data = await response.json();
 
-messages.innerHTML += `
+setTimeout(()=>{
+
+chatBox.innerHTML += `
 <div class="bot-msg">${data.reply}</div>
 `;
 
-messages.scrollTop = messages.scrollHeight;
+chatBox.scrollTop = chatBox.scrollHeight;
+
+},800);
 
 }
 
