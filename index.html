@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BaBy AI Chat</title>
+
+<link rel="stylesheet" href="/public/style.css">
+
+</head>
+<body>
+
+<div class="chat-container">
+
+<div class="top">
+<img src="https://i.ibb.co/3s1Jm4W/avatar.png" class="avatar">
+<div>
+<h2>YouR BaBy</h2>
+<p>Online • Active now</p>
+</div>
+</div>
+
+<div class="messages" id="messages">
+
+<div class="bot-msg">
+আসসালামু আলাইকুম ! আমি BaBy। আপনি কি আমার সাথে কথা বলতে প্রস্তুত?
+</div>
+
+</div>
+
+<div class="input-box">
+<input type="text" id="input" placeholder="Type message...">
+<button onclick="sendMessage()">➤</button>
+</div>
+
+</div>
+
+<script>
+
+async function sendMessage(){
+
+const input = document.getElementById("input");
+const msg = input.value;
+
+if(!msg) return;
+
+const messages = document.getElementById("messages");
+
+messages.innerHTML += `
+<div class="user-msg">${msg}</div>
+`;
+
+input.value = "";
+
+const res = await fetch('/api/chat', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify({message: msg})
+});
+
+const data = await res.json();
+
+messages.innerHTML += `
+<div class="bot-msg">${data.reply}</div>
+`;
+
+messages.scrollTop = messages.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
