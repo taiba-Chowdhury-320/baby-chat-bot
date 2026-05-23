@@ -1,29 +1,41 @@
-export default async function handler(req, res) {
+export default async function handler(req, res){
 
 if(req.method !== 'POST'){
 return res.status(405).json({
-reply: "Method Not Allowed"
+reply:"Method not allowed"
 });
 }
 
 const { message } = req.body;
 
-let reply = "";
-
 const msg = message.toLowerCase();
 
-if(msg.includes("hello")){
+let reply = "";
+
+if(msg.includes("hi")){
 reply = "Hello sona 😘";
 }
-else if(msg.includes("gay")){
-reply = "😂 Toi gaey 😏";
+
+else if(msg.includes("hello")){
+reply = "Hii baby 😍";
 }
+
 else if(msg.includes("love")){
 reply = "i love you too sona 🤗";
 }
-else if(msg.includes("hi")){
-reply = "Hey baby 😘";
+
+else if(msg.includes("gay")){
+reply = "😂 Toi gaey 😏";
 }
+
+else if(msg.includes("your mom")){
+reply = "ammu ke niye dustami korba na 😒";
+}
+
+else if(msg.includes("miss you")){
+reply = "Aww আমিও তোমাকে miss করি 🥺❤️";
+}
+
 else{
 reply = "Hmm.cini ami 🙂";
 }
